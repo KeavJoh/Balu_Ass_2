@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Balu_Ass_2.BotSettings
 {
-    internal class _DatabaseConnectionString
+    internal class ChannelIds
     {
-        public string? DefaultDatabaseConnection {  get; set; }
+        public ulong TestChannel { get; set; }
+        public ulong TestChannelTwo { get; set;}
     }
 }

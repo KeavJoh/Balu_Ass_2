@@ -8,8 +8,8 @@ namespace Balu_Ass_2.BotSettings
 {
     internal class BotConfig
     {
-        public _BotConnectionSettings BotSettings { get; set; }
-        public _ChannelIds ChannelIds { get; set; }
-        public _DatabaseConnectionString DatabaseConnectionString { get; set; }
+        public BotConnectionSettings? BotConnectionSettings { get; set; }
+        public ChannelIds? ChannelIds { get; set; }
+        public DatabaseConnectionString? DatabaseConnectionString { get; set; }
     }
 }

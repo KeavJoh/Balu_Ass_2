@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Balu_Ass_2.BotSettings
 {
-    internal class _ChannelIds
+    internal class DatabaseConnectionString
     {
+        public string? DefaultDatabaseConnection {  get; set; }
     }
 }
