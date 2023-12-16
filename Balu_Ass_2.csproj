@@ -11,6 +11,7 @@
     <Folder Include="Controllers\" />
     <Folder Include="Data\" />
     <Folder Include="Modals\" />
+    <Folder Include="Handler\" />
     <Folder Include="Views\" />
   </ItemGroup>
 
