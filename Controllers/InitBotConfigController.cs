@@ -1,4 +1,6 @@
 ﻿using Balu_Ass_2.BotSettings;
+using Balu_Ass_2.Data.Database;
+using DSharpPlus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +22,16 @@ namespace Balu_Ass_2.Controllers
             return botConfig;
         }
 
-        static IConfiguration InitConfiguration()
+        public Task InitProvidedSetup(BotConfig botConfig, ApplicationDbContext context, DiscordClient client)
+        {
+            ProvidedSetups.BotConfig = botConfig;
+            ProvidedSetups.Context = context;
+            ProvidedSetups.Client = client;
+
+            return Task.CompletedTask;
+        }
+
+        private static IConfiguration InitConfiguration()
         {
             IConfiguration? configuration = null;
             var builder = new ConfigurationBuilder();
@@ -46,7 +57,7 @@ namespace Balu_Ass_2.Controllers
             return configuration;
         }
 
-        static BotConfig InitBotConfig(IConfiguration configuration)
+        private static BotConfig InitBotConfig(IConfiguration configuration)
         {
             var host = Host.CreateDefaultBuilder().ConfigureServices((context, service) =>
             {

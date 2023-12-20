@@ -1,5 +1,6 @@
 ﻿using Balu_Ass_2.BotSettings;
 using Balu_Ass_2.Controllers;
+using Balu_Ass_2.Data.Database;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
@@ -11,18 +12,25 @@ class Programm
 
     static async Task Main(string[] args)
     {
-        //bot configuration
         InitBotConfigController botConfigController = new();
-        BotConfig botConfig = botConfigController.InitBotConfig();
+        RegistrateBotController registrateBotController = new();
         ClientReadyController clientReadyController = new();
 
+        //bot configuration
+        BotConfig botConfig = botConfigController.InitBotConfig();
+
+        //database configuration
+        using var context = new ApplicationDbContext(botConfig);
+        context.Database.EnsureCreated();
+
         //registrate bot
-        RegistrateBotController registrateBot = new();
-        ClientReadyController clientReady = new();
+        Client = new DiscordClient(registrateBotController.InitClient(botConfig));
 
-        Client = new DiscordClient(registrateBot.InitClient(botConfig));
+        //provide settings
+        await botConfigController.InitProvidedSetup(botConfig, context, Client);
 
-        Client.Ready += clientReady.ClientReady;
+        //init start bot
+        Client.Ready += clientReadyController.ClientReady;
         
 
         await Client.ConnectAsync();
