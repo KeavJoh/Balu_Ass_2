@@ -22,7 +22,6 @@ namespace Balu_Ass_2.Controllers
         public async static Task SaveLogMessage(int level, int type, string message)
         {
             using StreamWriter writer = new(logFile, true);
-            string logMessage;
 
             switch (level)
             {
