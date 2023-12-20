@@ -1,4 +1,5 @@
 ﻿using Balu_Ass_2.BotSettings;
+using Balu_Ass_2.Modals;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace Balu_Ass_2.Data.Database
     internal class ApplicationDbContext : DbContext
     {
         private readonly BotConfig _botConfig;
+
+        public DbSet<SystemLog> SystemLogs { get; set; }
 
         public ApplicationDbContext (BotConfig botConfig)
         {

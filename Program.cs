@@ -23,6 +23,9 @@ class Programm
         using var context = new ApplicationDbContext(botConfig);
         context.Database.EnsureCreated();
 
+        //init log controller
+        LogController.SetContext(context);
+
         //registrate bot
         Client = new DiscordClient(registrateBotController.InitClient(botConfig));
 
