@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Balu_Ass_2.Views
 {
     internal class ExclusiveMainView
-    {
+    {  
         private static readonly DiscordClient Client = ProvidedSetups.Client;
         private static readonly BotConfig? BotConfig = ProvidedSetups.BotConfig;
 
