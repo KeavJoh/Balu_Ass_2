@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Folder Include="Handler\" />
-    <Folder Include="Views\" />
   </ItemGroup>
 
   <ItemGroup>

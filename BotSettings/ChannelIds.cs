@@ -8,6 +8,6 @@ namespace Balu_Ass_2.BotSettings
 {
     internal class ChannelIds
     {
-        public ulong TestChannel { get; set; }
+        public ulong ExclusiveViewChannel { get; set; }
     }
 }

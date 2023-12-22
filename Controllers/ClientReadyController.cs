@@ -1,4 +1,5 @@
-﻿using DSharpPlus;
+﻿using Balu_Ass_2.Views;
+using DSharpPlus;
 using DSharpPlus.EventArgs;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Balu_Ass_2.Controllers
     {
         public async Task ClientReady(DiscordClient client, ReadyEventArgs args)
         {
-
+            await ExclusiveMainView.SendExclusiveMainView();
         }
     }
 }
