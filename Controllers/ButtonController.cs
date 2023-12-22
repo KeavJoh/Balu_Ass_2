@@ -1,4 +1,5 @@
-﻿using DSharpPlus;
+﻿using Balu_Ass_2.Views;
+using DSharpPlus;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Net;
 using System;
@@ -19,6 +20,7 @@ namespace Balu_Ass_2.Controllers
             {
                 case "addChildToDb":
                     {
+                        await ExclusiveMainView.AddChildToDbModal(args);
                         break;
                     }
             }

@@ -1,4 +1,5 @@
 ﻿using Balu_Ass_2.BotSettings;
+using Balu_Ass_2.Controllers;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -19,6 +20,7 @@ namespace Balu_Ass_2.Views
         public static async Task SendExclusiveMainView()
         {
             var exclusiveChannel = await Client.GetChannelAsync(BotConfig.ChannelIds.ExclusiveViewChannel);
+            await SupportController.DeleteAllMessages(exclusiveChannel);
 
             DiscordButtonComponent addChildToDb = new(ButtonStyle.Primary, "addChildToDb", "Kind hinzufügen");
 

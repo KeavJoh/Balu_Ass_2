@@ -42,7 +42,7 @@ namespace Balu_Ass_2.Controllers
                 await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                     .WithContent($"Leider trat ein Fehler in der Datenbankverbindung auf. Bitte versuche es erneut!"));
 
-                await LogController.SaveLogMessage(2, 3, $"Es wurde versucht ein Kind der Tabelle Childrens hinzuzufügen. Dabei trat ein Fehler in der AddChildToDb auf");
+                await LogController.SaveLogMessage(1, 3, $"Es wurde versucht ein Kind der Tabelle Childrens hinzuzufügen. Dabei trat ein Fehler in der AddChildToDb auf");
             }
 
             await Task.Delay(10000);
