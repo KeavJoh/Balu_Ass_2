@@ -26,7 +26,8 @@ namespace Balu_Ass_2.Controllers
                     FirstName = args.Values["firstName"],
                     LastName = args.Values["lastName"],
                     Mother = args.Values["nameOfMother"],
-                    Father = args.Values["nameOfFather"]
+                    Father = args.Values["nameOfFather"],
+                    DateOfLogged = DateTime.Now
                 };
 
                 await Context.Childrens.AddAsync(newChild);

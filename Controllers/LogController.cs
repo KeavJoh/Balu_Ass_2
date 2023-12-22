@@ -59,6 +59,7 @@ namespace Balu_Ass_2.Controllers
                 Message = message
             };
             await Context.SystemLogs.AddAsync(logDb);
+            await Context.SaveChangesAsync();
         }
     }
 }
