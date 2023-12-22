@@ -18,6 +18,7 @@ namespace Balu_Ass_2.Controllers
             {
                 case "addChildToDb":
                     {
+                        await DatabaseAccessController.AddChildToDb(args);
                         break;
                     }
             }
