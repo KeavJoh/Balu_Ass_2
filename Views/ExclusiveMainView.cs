@@ -1,6 +1,7 @@
 ﻿using Balu_Ass_2.BotSettings;
 using DSharpPlus;
 using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,19 @@ namespace Balu_Ass_2.Views
                 .AddComponents(addChildToDb);
 
             await exclusiveChannel.SendMessageAsync(message);
+        }
+
+        public static async Task AddChildToDbModal(ComponentInteractionCreateEventArgs args)
+        {
+            var modal = new DiscordInteractionResponseBuilder()
+                .WithTitle("Kind hinzufügen")
+                .WithCustomId(args.Interaction.Data.CustomId)
+                .AddComponents(new TextInputComponent(label: "Vorname", "firstName", "Vorname des Kindes"))
+                .AddComponents(new TextInputComponent(label: "Nachname", "lastName", "Nachname des Kindes"))
+                .AddComponents(new TextInputComponent(label: "Mutter", "nameOfMother", "Name der Mutter", required: false))
+                .AddComponents(new TextInputComponent(label: "Vater", "nameOfFather", "Name des Vaters", required: false));
+
+            await args.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
         }
     }
 }
