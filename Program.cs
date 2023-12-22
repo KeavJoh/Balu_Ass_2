@@ -34,6 +34,10 @@ class Programm
 
         //init start bot
         Client.Ready += clientReadyController.ClientReady;
+
+        //add action listener
+        Client.ComponentInteractionCreated += ButtonController.ButtonClickEvent;
+        Client.ModalSubmitted += ModalController.ModalSubmitEvent;
         
 
         await Client.ConnectAsync();
