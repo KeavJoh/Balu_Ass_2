@@ -46,7 +46,7 @@ namespace Balu_Ass_2.Controllers
 
         private static string CreateLogMessage(int level, int type, string message)
         {
-            string logMEssage = level.ToString() + ", " + type.ToString() + ", " + message;
+            string logMEssage =$"{DateTime.Now}" + ", " + level.ToString() + ", " + type.ToString() + ", " + message;
             return logMEssage;
         }
 
@@ -56,7 +56,8 @@ namespace Balu_Ass_2.Controllers
             {
                 Level = level,
                 Type = type,
-                Message = message
+                Message = message,
+                TimeOfAction = DateTime.Now
             };
             await Context.SystemLogs.AddAsync(logDb);
             await Context.SaveChangesAsync();

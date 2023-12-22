@@ -12,5 +12,6 @@ namespace Balu_Ass_2.Modals
         public int Level { get; set; }
         public int Type { get; set; }
         public string Message { get; set; }
+        public DateTime TimeOfAction { get; set; }
     }
 }
