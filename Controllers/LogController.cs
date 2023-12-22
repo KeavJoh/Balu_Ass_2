@@ -12,7 +12,7 @@ namespace Balu_Ass_2.Controllers
     internal class LogController
     {
         private static ApplicationDbContext Context {  get; set; }
-        private static string logFile = Path.Combine(Directory.GetCurrentDirectory(), "log.txt");
+        private static readonly string logFile = Path.Combine(Directory.GetCurrentDirectory(), "log.txt");
 
         public static void SetContext(ApplicationDbContext _context)
         {
@@ -21,8 +21,6 @@ namespace Balu_Ass_2.Controllers
 
         public async static Task SaveLogMessage(int level, int type, string message)
         {
-            using StreamWriter writer = new(logFile, true);
-
             switch (level)
             {
                 case 1:
@@ -40,14 +38,14 @@ namespace Balu_Ass_2.Controllers
 
         private static async Task AddLogToLogfile(string logMessage)
         {
-            using StreamWriter writer = new(logMessage, true);
+            using StreamWriter writer = new(logFile, true);
             await writer.WriteLineAsync(logMessage);
         }
 
         private static string CreateLogMessage(int level, int type, string message)
         {
-            string logMEssage =$"{DateTime.Now}" + ", " + level.ToString() + ", " + type.ToString() + ", " + message;
-            return logMEssage;
+            string logMessage =$"{DateTime.Now}" + ", " + level.ToString() + ", " + type.ToString() + ", " + message;
+            return logMessage;
         }
 
         private static async Task AddLogToDb(int level, int type, string message)
