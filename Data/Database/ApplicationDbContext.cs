@@ -14,6 +14,7 @@ namespace Balu_Ass_2.Data.Database
         private readonly BotConfig _botConfig;
 
         public DbSet<SystemLog> SystemLogs { get; set; }
+        public DbSet<Children> Childrens { get; set; }
 
         public ApplicationDbContext (BotConfig botConfig)
         {
