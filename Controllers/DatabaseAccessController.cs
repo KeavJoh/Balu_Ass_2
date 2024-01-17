@@ -30,13 +30,13 @@ namespace Balu_Ass_2.Controllers
                     DateOfLogged = DateTime.Now
                 };
 
-                await LogController.SaveLogMessage(2, 1, $"Kind mit dem Namen {args.Values["firstName"]} wurde der Datenbanktabelle Childrens durch den Nutzer {args.Interaction.User.Username} hinzugefügt");
+                await LogController.SaveLogMessage(2, 1, $"Kind mit dem Namen {newChild.FirstName} {newChild.LastName} wurde der Datenbanktabelle Childrens durch den Nutzer {args.Interaction.User.Username} hinzugefügt");
 
                 await Context.Childrens.AddAsync(newChild);
                 await Context.SaveChangesAsync();
 
                 await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
-                    .WithContent($"Ich habe {args.Values["firstName"]} erfolgreich in die Datenbank eingetragen."));
+                    .WithContent($"Ich habe {newChild.FirstName} {newChild.LastName} erfolgreich in die Datenbank eingetragen."));
 
                 await Task.Delay(10000);
                 await args.Interaction.DeleteOriginalResponseAsync();
