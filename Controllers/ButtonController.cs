@@ -23,6 +23,11 @@ namespace Balu_Ass_2.Controllers
                         await ExclusiveMainView.AddChildToDbModal(args);
                         break;
                     }
+                case "deleteChildFromDb":
+                    {
+                        await ExclusiveMainView.DeleteChildFromDbDropdown(args);
+                        break;
+                    }
             }
         }
     }

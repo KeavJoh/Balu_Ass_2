@@ -15,6 +15,7 @@ namespace Balu_Ass_2.Data.Database
 
         public DbSet<SystemLog> SystemLogs { get; set; }
         public DbSet<Children> Childrens { get; set; }
+        public DbSet<DeletedChildren> DeletedChildrens { get; set; }
 
         public ApplicationDbContext (BotConfig botConfig)
         {

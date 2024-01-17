@@ -52,5 +52,50 @@ namespace Balu_Ass_2.Controllers
                 await args.Interaction.DeleteOriginalResponseAsync();
             }
         }
+
+        public static async Task DeleteChildFromDb(ComponentInteractionCreateEventArgs args)
+        {
+            try
+            {
+                var selectedChild = args.Values.FirstOrDefault();
+                int.TryParse(selectedChild, out var selectedChildId);
+
+                var childInDb = Context.Childrens.SingleOrDefault(x => x.Id == selectedChildId);
+
+                var deletedChildren = new DeletedChildren
+                {
+                    FirstName = childInDb.FirstName,
+                    LastName = childInDb.LastName,
+                    Mother = childInDb.Mother,
+                    Father = childInDb.Father,
+                    DateOfLogged = childInDb.DateOfLogged,
+                    DateOfDeletion = DateTime.Now
+                };
+
+                await Context.DeletedChildrens.AddAsync(deletedChildren);
+                Context.Childrens.Remove(childInDb);
+                await Context.SaveChangesAsync();
+
+                await _DataStore.ReloadListOfChildren();
+
+                await LogController.SaveLogMessage(2, 1, $"Das Kind mit dem Namen {childInDb.FirstName} {childInDb.LastName} wurde durch den Nutzer {args.Interaction.User.Username} entfernt!");
+
+                await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                    .WithContent($"{childInDb.FirstName} {childInDb.LastName} wurde erfolgreich entfernt"));
+
+                await Task.Delay(10000);
+                await args.Interaction.DeleteOriginalResponseAsync();
+            }
+            catch (Exception)
+            {
+                await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                    .WithContent($"Leider trat ein Fehler bei dem entfernen des Kindes aus der Datenbank auf. Bitte versuche es erneut!"));
+
+                await LogController.SaveLogMessage(1, 3, $"Bei dem Versuch ein Kind zu entfernen, ist ein Fehler aufgetreten. DatabaseAccessController.DeleteChildFromDb");
+
+                await Task.Delay(10000);
+                await args.Interaction.DeleteOriginalResponseAsync();
+            }
+        }
     }
 }

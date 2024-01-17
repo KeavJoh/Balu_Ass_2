@@ -1,8 +1,10 @@
 ﻿using Balu_Ass_2.BotSettings;
 using Balu_Ass_2.Controllers;
+using Balu_Ass_2.Modals;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using DSharpPlus.SlashCommands;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Balu_Ass_2.Views
 {
-    internal class ExclusiveMainView
+    internal class ExclusiveMainView : ApplicationCommandModule
     {  
         private static readonly DiscordClient Client = ProvidedSetups.Client;
         private static readonly BotConfig? BotConfig = ProvidedSetups.BotConfig;
@@ -23,11 +25,13 @@ namespace Balu_Ass_2.Views
             await SupportController.DeleteAllMessages(exclusiveChannel);
 
             DiscordButtonComponent addChildToDb = new(ButtonStyle.Primary, "addChildToDb", "Kind hinzufügen");
+            DiscordButtonComponent deleteChildFromDb = new(ButtonStyle.Danger, "deleteChildFromDb", "Kind entfernen");
 
             var message = new DiscordMessageBuilder().AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
                 .WithTitle("Hallo und Herzlich Wilkommen")
                 .WithDescription("Hier können verschiedene Befehle ausgeführt werden."))
-                .AddComponents(addChildToDb);
+                .AddComponents(addChildToDb)
+                .AddComponents(deleteChildFromDb);
 
             await exclusiveChannel.SendMessageAsync(message);
         }
@@ -43,6 +47,20 @@ namespace Balu_Ass_2.Views
                 .AddComponents(new TextInputComponent(label: "Vater", "nameOfFather", "Name des Vaters", required: false));
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
+        }
+
+        public static async Task DeleteChildFromDbDropdown(ComponentInteractionCreateEventArgs args)
+        {
+            var options = await _DataStore.GetChildrensList();
+
+            var dropdown = new DiscordSelectComponent("deleteChildFromDbDropdwon", "Kind auswählen", options);
+
+            var message = new DiscordInteractionResponseBuilder()
+                .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkRed)
+                .WithTitle("Welches Kind soll aus der Liste entfernt werden?"))
+                .AddComponents(dropdown);
+
+            await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
         }
     }
 }

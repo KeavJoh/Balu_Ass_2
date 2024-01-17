@@ -1,9 +1,12 @@
 ﻿using Balu_Ass_2.BotSettings;
 using Balu_Ass_2.Controllers;
 using Balu_Ass_2.Data.Database;
+using Balu_Ass_2.Modals;
+using Balu_Ass_2.Views;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
+using DSharpPlus.SlashCommands;
 
 class Programm
 {
@@ -32,13 +35,21 @@ class Programm
         //init log controller
         LogController.SetContext(ProvidedSetups.Context);
 
+        //init _DataStore
+        await _DataStore.InitDataStore();
+
         //init start bot
         Client.Ready += clientReadyController.ClientReady;
 
         //add action listener
         Client.ComponentInteractionCreated += ButtonController.ButtonClickEvent;
         Client.ModalSubmitted += ModalController.ModalSubmitEvent;
-        
+        Client.ComponentInteractionCreated += DropdownController.DropdwonSubmitEvent;
+
+        var slashCommandsConfig = Client.UseSlashCommands();
+
+        slashCommandsConfig.RegisterCommands<ExclusiveMainView>();
+
 
         await Client.ConnectAsync();
         await Task.Delay(-1);
