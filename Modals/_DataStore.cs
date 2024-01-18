@@ -1,6 +1,7 @@
 ﻿using Balu_Ass_2.BotSettings;
 using Balu_Ass_2.Controllers;
 using Balu_Ass_2.Data.Database;
+using Balu_Ass_2.Views;
 using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -41,6 +42,7 @@ namespace Balu_Ass_2.Modals
         public static async Task ReloadListOfDeregistrations()
         {
             DeregistrationList = await context.ChildDeregistrations.OrderBy(x => x.DeregistrationDay).ToListAsync();
+            await ChildPresenceInformationMainView.SendPresenceInformationsMainView();
         }
 
         public static async Task<List<DiscordSelectComponentOption>> GetChildrensList()

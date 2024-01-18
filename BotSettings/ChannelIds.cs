@@ -10,5 +10,6 @@ namespace Balu_Ass_2.BotSettings
     {
         public ulong ExclusiveViewChannel { get; set; }
         public ulong ChildPresenceViewChannel { get; set; }
+        public ulong ChildPresenceInformationViewChannel { get; set; }
     }
 }

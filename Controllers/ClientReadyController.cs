@@ -15,8 +15,7 @@ namespace Balu_Ass_2.Controllers
         {
             await ExclusiveCommandMainView.SendExclusiveMainView();
             await ChildPresenceCommandMainView.SendChildPresenceMainView();
-
-
+            await ChildPresenceInformationMainView.SendPresenceInformationsMainView();
         }
     }
 }
