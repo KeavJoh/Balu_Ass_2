@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Balu_Ass_2.Views
 {
-    internal class ExclusiveMainView : ApplicationCommandModule
+    internal class ExclusiveCommandMainView : ApplicationCommandModule
     {  
         private static readonly DiscordClient Client = ProvidedSetups.Client;
         private static readonly BotConfig? BotConfig = ProvidedSetups.BotConfig;

@@ -1,4 +1,5 @@
 ﻿using Balu_Ass_2.BotSettings;
+using Balu_Ass_2.Views;
 using DSharpPlus;
 using DSharpPlus.EventArgs;
 using System;
@@ -22,6 +23,11 @@ namespace Balu_Ass_2.Controllers
                     {
                         await DatabaseAccessController.DeleteChildFromDb(args);
                         await SupportController.DeleteLastMessage(channelId);
+                        break;
+                    }
+                case "deregistrateChildDropdown":
+                    {
+                        await ChildPresenceCommandMainView.DeregistrateChildModal(args);
                         break;
                     }
             }

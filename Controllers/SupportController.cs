@@ -1,6 +1,7 @@
 ﻿using DSharpPlus.Entities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,28 @@ namespace Balu_Ass_2.Controllers
             {
                 await latestMessage.DeleteAsync();
             }
+        }
+
+        public static DateTime ParseStringToDateTime(string stringDateTime)
+        {
+            DateTime finalDateTime = DateTime.MaxValue;
+            string[] stringFormat = ["d.M.yy", "dd.MM.yy", "d.M.yyyy", "dd.MM.yyyy"];
+            bool parseSuccessfull = false;
+
+            foreach (var format in stringFormat)
+            {
+                if(DateTime.TryParseExact(stringDateTime, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out finalDateTime))
+                {
+                    parseSuccessfull = true;
+                    break;
+                }
+            }
+            if (!parseSuccessfull)
+            {
+                finalDateTime = DateTime.MinValue;
+            }
+
+            return finalDateTime.Date;
         }
     }
 }

@@ -16,10 +16,14 @@ namespace Balu_Ass_2.Modals
         private static readonly ApplicationDbContext context = ProvidedSetups.Context;
 
         public static List<Children> ListOfChildren { get; set; }
+        public static List<ChildDeregistration> DeregistrationList { get; set; }
+        public static int? ChildId { get; set; }
 
         public static async Task InitDataStore()
         {
             await ReloadListOfChildren();
+            await ReloadListOfDeregistrations();
+            ChildId = null;
         }
 
         public static async Task ReloadListOfChildren()
@@ -32,6 +36,11 @@ namespace Balu_Ass_2.Modals
             {
                 await LogController.SaveLogMessage(1, 3, "Es ist ein Fehler beim Laden der Liste aller Kinder aufgetreten. _DataStore.ReloadListOfChildren()");
             }
+        }
+
+        public static async Task ReloadListOfDeregistrations()
+        {
+            DeregistrationList = await context.ChildDeregistrations.OrderBy(x => x.DeregistrationDay).ToListAsync();
         }
 
         public static async Task<List<DiscordSelectComponentOption>> GetChildrensList()

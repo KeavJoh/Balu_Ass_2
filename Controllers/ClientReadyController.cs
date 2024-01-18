@@ -13,7 +13,10 @@ namespace Balu_Ass_2.Controllers
     {
         public async Task ClientReady(DiscordClient client, ReadyEventArgs args)
         {
-            await ExclusiveMainView.SendExclusiveMainView();
+            await ExclusiveCommandMainView.SendExclusiveMainView();
+            await ChildPresenceCommandMainView.SendChildPresenceMainView();
+
+
         }
     }
 }

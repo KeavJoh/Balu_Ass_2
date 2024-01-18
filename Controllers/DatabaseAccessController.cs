@@ -1,6 +1,7 @@
 ﻿using Balu_Ass_2.BotSettings;
 using Balu_Ass_2.Data.Database;
 using Balu_Ass_2.Modals;
+using Balu_Ass_2.Validations;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -34,6 +35,8 @@ namespace Balu_Ass_2.Controllers
 
                 await Context.Childrens.AddAsync(newChild);
                 await Context.SaveChangesAsync();
+
+                await _DataStore.ReloadListOfChildren();
 
                 await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                     .WithContent($"Ich habe {newChild.FirstName} {newChild.LastName} erfolgreich in die Datenbank eingetragen."));
@@ -95,6 +98,139 @@ namespace Balu_Ass_2.Controllers
 
                 await Task.Delay(10000);
                 await args.Interaction.DeleteOriginalResponseAsync();
+            }
+        }
+
+        public static async Task DeregistrateChild(ModalSubmitEventArgs args)
+        {
+            var selectChild = args.Values;
+            var selectChildId = _DataStore.ChildId;
+            var firstName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == selectChildId).FirstName;
+            var lastName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == selectChildId).LastName;
+            DateTime dateFrom = SupportController.ParseStringToDateTime(selectChild["dateFrom"]);
+            DateTime dateTo = SupportController.ParseStringToDateTime(selectChild["dateTo"]);
+
+            try
+            {
+                if (DateTimeValidations.DateTimeInThePast(dateFrom))
+                {
+                    await LogController.SaveLogMessage(1, 2, $"Das angegebene Startdatum {dateFrom} liegt in der Vergangenheit");
+                    await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                        .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkRed).WithTitle("Fehler bei der Abmeldung").WithDescription("Das angegebene Datum liegt in der Vergangenheit!")));
+
+                    await Task.Delay(10000);
+                    await args.Interaction.DeleteOriginalResponseAsync();
+                    return;
+                }
+
+                if (DateTimeValidations.ChildPresenceForOneDay(dateFrom, dateTo))
+                {
+                    if (DateTimeValidations.DateTimeDayIsWeekendDay(dateFrom))
+                    {
+                        await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                            .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.Yellow).WithTitle("Abmeldung für ein Wochenende").WithDescription("Das angegebene Datum ist ein Wochenende. Für diese Tage ist keine Abmeldung notwendig!")));
+
+                        await Task.Delay(10000);
+                        await args.Interaction.DeleteOriginalResponseAsync();
+                        return;
+                    }
+
+                    var existingDeregistration = _DataStore.DeregistrationList.FirstOrDefault(x => x.ChildId == selectChildId && x.DeregistrationDay == dateFrom);
+
+                    if (existingDeregistration == null)
+                    {
+                        var newDeregistration = new ChildDeregistration()
+                        {
+                            FirstName = firstName,
+                            LastName = lastName,
+                            ChildId = (int)selectChildId,
+                            DeregistrationDay = dateFrom,
+                            Reason = selectChild["reason"],
+                            DateDeregistrationOn = DateTime.Now
+                        };
+
+                        await Context.ChildDeregistrations.AddAsync(newDeregistration);
+                        await Context.SaveChangesAsync();
+
+                        await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                            .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkGreen).WithTitle("Abmeldung erfolgreich").WithDescription($"Ich habe {firstName} erfolgreich abgemeldet!")));
+                    }
+                    else
+                    {
+                        await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                            .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.Yellow).WithTitle("Abmeldung existiert bereits").WithDescription($"Für den angegebenen Zeitraum exisitert bereits eine Abmeldung für {firstName}!")));
+                    }
+                }
+                else
+                {
+                    var dates = new List<DateTime>();
+
+                    if (!DateTimeValidations.PeriodIsCorrect(dateFrom, dateTo))
+                    {
+                        await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                            .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkRed).WithTitle("Der angegebene Zeitraum ist fehlerhaft").WithDescription($"Das Enddatum kann nicht vor dem Startdatum liegen! Das Startdatum muss immer kleiner als das Enddatum sein!")));
+
+                        await Task.Delay(10000);
+                        await args.Interaction.DeleteOriginalResponseAsync();
+                    }
+
+                    while (dateFrom <= dateTo)
+                    {
+                        if ((dateFrom.DayOfWeek != DayOfWeek.Sunday && dateFrom.DayOfWeek != DayOfWeek.Saturday) || dateFrom < DateTime.Now)
+                        {
+                            var existingDeregistration = _DataStore.DeregistrationList.FirstOrDefault(x => x.ChildId == selectChildId && x.DeregistrationDay == dateFrom);
+                            if (existingDeregistration == null)
+                            {
+                                dates.Add(dateFrom);
+                                dateFrom = dateFrom.AddDays(1);
+                            } 
+                            else
+                            {
+                                dateFrom = dateFrom.AddDays(1);
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            dateFrom = dateFrom.AddDays(1);
+                        }
+                    }
+
+                    if (dates.Count != 0)
+                    {
+                        foreach (var date in dates)
+                        {
+                            var newDeregistration = new ChildDeregistration()
+                            {
+                                FirstName = firstName,
+                                LastName = lastName,
+                                ChildId = (int)selectChildId,
+                                DeregistrationDay = date,
+                                Reason = selectChild["reason"],
+                                DateDeregistrationOn = DateTime.Now
+                            };
+
+                            await Context.ChildDeregistrations.AddAsync(newDeregistration);
+                            await Context.SaveChangesAsync();
+                        }
+
+                        await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                            .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkGreen).WithTitle("Abmeldung erfolgreich").WithDescription($"Ich habe {firstName} erfolgreich abgemeldet!")));
+                    }
+                    else
+                    {
+                        await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                            .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.Yellow).WithTitle("Abmeldung existiert bereits").WithDescription($"Für den angegebenen Zeitraum exisitert bereits eine Abmeldung für {firstName}!")));
+                    }
+                }
+
+                await _DataStore.ReloadListOfDeregistrations();
+                await Task.Delay(10000);
+                await args.Interaction.DeleteOriginalResponseAsync();
+            }
+            catch (Exception)
+            {
+
             }
         }
     }

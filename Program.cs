@@ -48,7 +48,7 @@ class Programm
 
         var slashCommandsConfig = Client.UseSlashCommands();
 
-        slashCommandsConfig.RegisterCommands<ExclusiveMainView>();
+        slashCommandsConfig.RegisterCommands<ExclusiveCommandMainView>();
 
 
         await Client.ConnectAsync();

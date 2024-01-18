@@ -1,4 +1,5 @@
-﻿using Balu_Ass_2.Views;
+﻿using Balu_Ass_2.Modals;
+using Balu_Ass_2.Views;
 using DSharpPlus;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Net;
@@ -20,12 +21,17 @@ namespace Balu_Ass_2.Controllers
             {
                 case "addChildToDb":
                     {
-                        await ExclusiveMainView.AddChildToDbModal(args);
+                        await ExclusiveCommandMainView.AddChildToDbModal(args);
                         break;
                     }
                 case "deleteChildFromDb":
                     {
-                        await ExclusiveMainView.DeleteChildFromDbDropdown(args);
+                        await ExclusiveCommandMainView.DeleteChildFromDbDropdown(args);
+                        break;
+                    }
+                case "deregistrateChild":
+                    {
+                        await ChildPresenceCommandMainView.DeregistrateChildDropdown(args);
                         break;
                     }
             }

@@ -9,5 +9,6 @@ namespace Balu_Ass_2.BotSettings
     internal class ChannelIds
     {
         public ulong ExclusiveViewChannel { get; set; }
+        public ulong ChildPresenceViewChannel { get; set; }
     }
 }
