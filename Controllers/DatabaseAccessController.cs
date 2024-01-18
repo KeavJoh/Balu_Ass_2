@@ -16,6 +16,7 @@ namespace Balu_Ass_2.Controllers
 {
     internal class DatabaseAccessController
     {
+        private static readonly int DeleteTimeSpan = ProvidedSetups.BotConfig.GlobalSettings.DeleteTimeSpan;
         private static readonly ApplicationDbContext Context = ProvidedSetups.Context;
 
         public static async Task AddChildToDb(ModalSubmitEventArgs args)
@@ -41,7 +42,7 @@ namespace Balu_Ass_2.Controllers
                 await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                     .WithContent($"Ich habe {newChild.FirstName} {newChild.LastName} erfolgreich in die Datenbank eingetragen."));
 
-                await Task.Delay(10000);
+                await Task.Delay(DeleteTimeSpan);
                 await args.Interaction.DeleteOriginalResponseAsync();
             }
             catch (Exception)
@@ -51,7 +52,7 @@ namespace Balu_Ass_2.Controllers
 
                 await LogController.SaveLogMessage(1, 3, $"Es wurde versucht ein Kind der Tabelle Childrens hinzuzufügen. Dabei trat ein Fehler in der AddChildToDb auf");
 
-                await Task.Delay(10000);
+                await Task.Delay(DeleteTimeSpan);
                 await args.Interaction.DeleteOriginalResponseAsync();
             }
         }
@@ -86,7 +87,7 @@ namespace Balu_Ass_2.Controllers
                 await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                     .WithContent($"{childInDb.FirstName} {childInDb.LastName} wurde erfolgreich entfernt"));
 
-                await Task.Delay(10000);
+                await Task.Delay(DeleteTimeSpan);
                 await args.Interaction.DeleteOriginalResponseAsync();
             }
             catch (Exception)
@@ -96,7 +97,7 @@ namespace Balu_Ass_2.Controllers
 
                 await LogController.SaveLogMessage(1, 3, $"Bei dem Versuch ein Kind zu entfernen, ist ein Fehler aufgetreten. DatabaseAccessController.DeleteChildFromDb");
 
-                await Task.Delay(10000);
+                await Task.Delay(DeleteTimeSpan);
                 await args.Interaction.DeleteOriginalResponseAsync();
             }
         }
@@ -118,7 +119,7 @@ namespace Balu_Ass_2.Controllers
                     await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                         .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkRed).WithTitle("Fehler bei der Abmeldung").WithDescription("Das angegebene Datum liegt in der Vergangenheit!")));
 
-                    await Task.Delay(10000);
+                    await Task.Delay(DeleteTimeSpan);
                     await args.Interaction.DeleteOriginalResponseAsync();
                     return;
                 }
@@ -130,7 +131,7 @@ namespace Balu_Ass_2.Controllers
                         await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                             .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.Yellow).WithTitle("Abmeldung für ein Wochenende").WithDescription("Das angegebene Datum ist ein Wochenende. Für diese Tage ist keine Abmeldung notwendig!")));
 
-                        await Task.Delay(10000);
+                        await Task.Delay(DeleteTimeSpan);
                         await args.Interaction.DeleteOriginalResponseAsync();
                         return;
                     }
@@ -170,7 +171,7 @@ namespace Balu_Ass_2.Controllers
                         await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                             .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkRed).WithTitle("Der angegebene Zeitraum ist fehlerhaft").WithDescription($"Das Enddatum kann nicht vor dem Startdatum liegen! Das Startdatum muss immer kleiner als das Enddatum sein!")));
 
-                        await Task.Delay(10000);
+                        await Task.Delay(DeleteTimeSpan);
                         await args.Interaction.DeleteOriginalResponseAsync();
                     }
 
@@ -225,7 +226,7 @@ namespace Balu_Ass_2.Controllers
                 }
 
                 await _DataStore.ReloadListOfDeregistrations();
-                await Task.Delay(10000);
+                await Task.Delay(DeleteTimeSpan);
                 await args.Interaction.DeleteOriginalResponseAsync();
             }
             catch (Exception)

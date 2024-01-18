@@ -11,5 +11,6 @@ namespace Balu_Ass_2.BotSettings
         public BotConnectionSettings? BotConnectionSettings { get; set; }
         public ChannelIds? ChannelIds { get; set; }
         public DatabaseConnectionString? DatabaseConnectionString { get; set; }
+        public GlobalSettings? GlobalSettings { get; set; }
     }
 }
