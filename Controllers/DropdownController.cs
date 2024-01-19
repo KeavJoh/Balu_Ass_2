@@ -15,19 +15,31 @@ namespace Balu_Ass_2.Controllers
         public static async Task DropdwonSubmitEvent(DiscordClient client, ComponentInteractionCreateEventArgs args)
         {
             var dropdownId = args.Interaction.Data.CustomId;
-            var channelId = await client.GetChannelAsync(ProvidedSetups.BotConfig.ChannelIds.ExclusiveViewChannel);
+            var exclusiveChannelId = await client.GetChannelAsync(ProvidedSetups.BotConfig.ChannelIds.ExclusiveViewChannel);
+            var presenceChannelId = await client.GetChannelAsync(ProvidedSetups.BotConfig.ChannelIds.ChildPresenceViewChannel);
 
-            switch(dropdownId)
+            switch (dropdownId)
             {
                 case "deleteChildFromDbDropdwon":
                     {
                         await DatabaseAccessController.DeleteChildFromDb(args);
-                        await SupportController.DeleteLastMessage(channelId);
+                        await SupportController.DeleteLastMessage(exclusiveChannelId);
                         break;
                     }
                 case "deregistrateChildDropdown":
                     {
                         await ChildPresenceCommandMainView.DeregistrateChildModal(args);
+                        break;
+                    }
+                case "fastDeregistrateChildDropdown":
+                    {
+                        await DatabaseAccessController.FastDeregistrateChild(args);
+                        await SupportController.DeleteLastMessage(presenceChannelId);
+                        break;
+                    }
+                case "registrateChildDropdown":
+                    {
+                        await ChildPresenceCommandMainView.RegistrateChildModal(args);
                         break;
                     }
             }

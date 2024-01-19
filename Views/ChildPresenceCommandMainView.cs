@@ -23,12 +23,16 @@ namespace Balu_Ass_2.Views
             var presenceCommandChannel = await Client.GetChannelAsync(BotConfig.ChannelIds.ChildPresenceViewChannel);
             await SupportController.DeleteAllMessages(presenceCommandChannel);
 
-            DiscordButtonComponent deregistrateChild = new(ButtonStyle.Primary, "deregistrateChild", "Kind Abmelden");
+            DiscordButtonComponent deregistrateChild = new(ButtonStyle.Danger, "deregistrateChild", "Kind Abmelden");
+            DiscordButtonComponent fastDeregistrateChild = new(ButtonStyle.Danger, "fastDeregistrateChild", "Schnellabmeldung");
+            DiscordButtonComponent registrateChild = new(ButtonStyle.Primary, "registrateChild", "Anmeldung");
 
             var message = new DiscordMessageBuilder().AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
                 .WithTitle("Hallo und Herzlich Wilkommen")
                 .WithDescription("Hier können verschiedene Befehle ausgeführt werden."))
-                .AddComponents(deregistrateChild);
+                .AddComponents(deregistrateChild)
+                .AddComponents(fastDeregistrateChild)
+                .AddComponents(registrateChild);
 
             await presenceCommandChannel.SendMessageAsync(message);
         }
@@ -60,5 +64,46 @@ namespace Balu_Ass_2.Views
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
         }
+
+        public static async Task FastDeregistrateChildDropdown(ComponentInteractionCreateEventArgs args)
+        {
+            var options = await _DataStore.GetChildrensList();
+            var dropdown = new DiscordSelectComponent("fastDeregistrateChildDropdown", "Welches Kind möchtest du Abmelden?", options);
+
+            var message = new DiscordInteractionResponseBuilder()
+                .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
+                .WithTitle("Welches Kind möchtest du Abmelden?"))
+                .AddComponents(dropdown);
+
+            await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
+        }
+
+        public static async Task RegistrateChildDropdown(ComponentInteractionCreateEventArgs args)
+        {
+            var options = await _DataStore.GetChildrensList();
+            var dropdown = new DiscordSelectComponent("registrateChildDropdown", "Welches Kind möchtest du Anmelden?", options);
+
+            var message = new DiscordInteractionResponseBuilder()
+                .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
+                .WithTitle("Welches Kind möchtest du Anmelden?"))
+                .AddComponents(dropdown);
+
+            await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
+        }
+
+        public static async Task RegistrateChildModal(ComponentInteractionCreateEventArgs args)
+        {
+            int.TryParse(args.Values[0], out int id);
+            _DataStore.ChildId = id;
+
+            var modal = new DiscordInteractionResponseBuilder()
+                .WithTitle("Kind anmelden")
+                .WithCustomId("registrateChildModal")
+                .AddComponents(new TextInputComponent(label: "Von Datum (tt.MM.jjjj / tt.MM.jj)", "dateFrom", "bsp. 20.01.2024", min_length: 8, max_length: 10))
+                .AddComponents(new TextInputComponent(label: "Bis Datum (tt.MM.jjjj / tt.MM.jj)", "dateTo", "Nur benötigt für anmeldungen mehr als 1 Tag", min_length: 8, max_length: 10, required: false));
+
+            await args.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
+        }
+
     }
 }

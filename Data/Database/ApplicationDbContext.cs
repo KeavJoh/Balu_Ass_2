@@ -17,6 +17,7 @@ namespace Balu_Ass_2.Data.Database
         public DbSet<Children> Childrens { get; set; }
         public DbSet<DeletedChildren> DeletedChildrens { get; set; }
         public DbSet<ChildDeregistration> ChildDeregistrations { get; set; }
+        public DbSet<ChildWithdrawnDeregistration> ChildWithdrawnDeregistrations { get; set; }
 
         public ApplicationDbContext (BotConfig botConfig)
         {

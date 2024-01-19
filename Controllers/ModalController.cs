@@ -32,6 +32,12 @@ namespace Balu_Ass_2.Controllers
                         await SupportController.DeleteLastMessage(presenceChannelId);
                         break;
                     }
+                case "registrateChildModal":
+                    {
+                        await DatabaseAccessController.RegistrateChild(args);
+                        await SupportController.DeleteLastMessage(presenceChannelId);
+                        break;
+                    }
             }
         }
     }

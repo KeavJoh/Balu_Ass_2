@@ -34,6 +34,16 @@ namespace Balu_Ass_2.Controllers
                         await ChildPresenceCommandMainView.DeregistrateChildDropdown(args);
                         break;
                     }
+                case "fastDeregistrateChild":
+                    {
+                        await ChildPresenceCommandMainView.FastDeregistrateChildDropdown(args);
+                        break;
+                    }
+                case "registrateChild":
+                    {
+                        await ChildPresenceCommandMainView.RegistrateChildDropdown(args);
+                        break;
+                    }
             }
         }
     }
