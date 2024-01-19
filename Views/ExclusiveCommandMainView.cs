@@ -29,7 +29,9 @@ namespace Balu_Ass_2.Views
 
             var message = new DiscordMessageBuilder().AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
                 .WithTitle("Hallo und Herzlich Wilkommen")
-                .WithDescription("Hier können verschiedene Befehle ausgeführt werden."))
+                .WithDescription("Hier können verschiedene Befehle ausgeführt werden.")
+                .AddField("Kind hinzufügen", $"`Hier kannst du ein Kind dem Balu hinzufügen`")
+                .AddField("Kind entfernen", $"`Hier kannst du ein Kind aus dem Balu entfernen`"))
                 .AddComponents(addChildToDb)
                 .AddComponents(deleteChildFromDb);
 
@@ -53,11 +55,11 @@ namespace Balu_Ass_2.Views
         {
             var options = await _DataStore.GetChildrensList();
 
-            var dropdown = new DiscordSelectComponent("deleteChildFromDbDropdwon", "Kind auswählen", options);
+            var dropdown = new DiscordSelectComponent("deleteChildFromDbDropdwon", "Welches Kind möchtest du entfernen?", options);
 
             var message = new DiscordInteractionResponseBuilder()
-                .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkRed)
-                .WithTitle("Welches Kind soll aus der Liste entfernt werden?"))
+                .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
+                .WithTitle("Wähle bitte ein Kinde welches aus dem Balu entfernt werden soll:"))
                 .AddComponents(dropdown);
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
