@@ -85,7 +85,7 @@ namespace Balu_Ass_2.Views
 
             if (!deregistrationList.Any())
             {
-                descriptionBuilder.AppendLine($"**Es gibt keine Abmeldungen für die nächsten Tage**");
+                descriptionBuilder.AppendLine($"`Es gibt keine Abmeldungen für die nächsten Tage`");
             }
             else
             {

@@ -29,7 +29,10 @@ namespace Balu_Ass_2.Views
 
             var message = new DiscordMessageBuilder().AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
                 .WithTitle("Hallo und Herzlich Wilkommen")
-                .WithDescription("Hier können verschiedene Befehle ausgeführt werden."))
+                .WithDescription("Hier kannst du dein Kind Abmelden oder auch wieder Anmelden. Klicke dazu einfach auf einen der unten stehenden Befehle.")
+                .AddField("Abmelden", $"`Hier kannst du dein Kind für einen oder mehrere Tage abmelden`")
+                .AddField("Schnellabmeldung", $"`Hier kannst du dein Kind für den aktuellen Tag abmelden`")
+                .AddField("Anmelden", $"`Hier kannst du eine Abmeldung für einen oder mehrere Tage rückgängig machen`"))
                 .AddComponents(deregistrateChild)
                 .AddComponents(fastDeregistrateChild)
                 .AddComponents(registrateChild);
@@ -44,7 +47,7 @@ namespace Balu_Ass_2.Views
 
             var message = new DiscordInteractionResponseBuilder()
                 .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
-                .WithTitle("Welches Kind möchtest du Abmelden?"))
+                .WithTitle("Wähle bitte das Kind welches du Abmelden möchtest:"))
                 .AddComponents(dropdown);
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
@@ -72,7 +75,7 @@ namespace Balu_Ass_2.Views
 
             var message = new DiscordInteractionResponseBuilder()
                 .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
-                .WithTitle("Welches Kind möchtest du Abmelden?"))
+                .WithTitle("Wähle bitte das Kind welches du Abmelden möchtest:"))
                 .AddComponents(dropdown);
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
@@ -85,7 +88,7 @@ namespace Balu_Ass_2.Views
 
             var message = new DiscordInteractionResponseBuilder()
                 .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
-                .WithTitle("Welches Kind möchtest du Anmelden?"))
+                .WithTitle("Wähle bitte das Kind welches du Anmelden möchtest:"))
                 .AddComponents(dropdown);
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
