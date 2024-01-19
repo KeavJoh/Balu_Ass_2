@@ -4,6 +4,7 @@ using Balu_Ass_2.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Balu_Ass_2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240119204816_deleteTable")]
+    partial class deleteTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,40 +57,6 @@ namespace Balu_Ass_2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ChildDeregistrations");
-                });
-
-            modelBuilder.Entity("Balu_Ass_2.Modals.ChildExpiredDeregistration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChildId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateDeregistrationOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeregistrationDay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ChildExpiredDeregistrations");
                 });
 
             modelBuilder.Entity("Balu_Ass_2.Modals.ChildWithdrawnDeregistration", b =>

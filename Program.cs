@@ -12,6 +12,7 @@ class Programm
 {
     private static DiscordClient? Client { get; set; }
     private static CommandsNextExtension? Commands { get; set; }
+    private static Timer? Timer { get; set; }
 
     static async Task Main(string[] args)
     {
@@ -50,8 +51,14 @@ class Programm
 
         slashCommandsConfig.RegisterCommands<ExclusiveCommandMainView>();
 
+        Timer = new Timer(StartTimer, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
 
         await Client.ConnectAsync();
         await Task.Delay(-1);
+    }
+
+    private static async void StartTimer(object state)
+    {
+        await TimerActionController.TimerActions();
     }
 }
