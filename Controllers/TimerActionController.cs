@@ -35,7 +35,8 @@ namespace Balu_Ass_2.Controllers
                         ChildId = expiredDeregistration.ChildId,
                         DeregistrationDay = expiredDeregistration.DeregistrationDay,
                         Reason = expiredDeregistration.Reason,
-                        DateDeregistrationOn = expiredDeregistration.DateDeregistrationOn
+                        DateDeregistrationOn = expiredDeregistration.DateDeregistrationOn,
+                        DeregistrationBy = expiredDeregistration.DeregistrationBy
                     };
 
                     await Context.ChildExpiredDeregistrations.AddAsync(expiredObject);

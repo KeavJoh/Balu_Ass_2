@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Balu_Ass_2.BotSettings;
 using Balu_Ass_2.Data.Database;
+using DSharpPlus.Entities;
 
 namespace Balu_Ass_2.Handler
 {
@@ -18,9 +19,16 @@ namespace Balu_Ass_2.Handler
         private static readonly int DeleteTimeSpan = ProvidedSetups.BotConfig.GlobalSettings.DeleteTimeSpan;
         private static readonly ApplicationDbContext Context = ProvidedSetups.Context;
         private static readonly DiscordClient Client = ProvidedSetups.Client;
+        private static DiscordMember? currentMember;
+
+        private static void GetCurrentUser(DiscordUser user)
+        {
+            currentMember = (DiscordMember)user;
+        }
 
         public static async Task DeregistrateChildToDbHandler(ModalSubmitEventArgs args)
         {
+            GetCurrentUser(args.Interaction.User);
             var selectChild = args.Values;
             var selectChildId = _DataStore.ChildId;
             var firstName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == selectChildId).FirstName;
@@ -64,7 +72,8 @@ namespace Balu_Ass_2.Handler
                             ChildId = (int)selectChildId,
                             DeregistrationDay = dateFrom,
                             Reason = selectChild["reason"],
-                            DateDeregistrationOn = DateTime.Now
+                            DateDeregistrationOn = DateTime.Now,
+                            DeregistrationBy = currentMember.Nickname
                         };
 
                         await Context.ChildDeregistrations.AddAsync(newDeregistration);
@@ -127,7 +136,8 @@ namespace Balu_Ass_2.Handler
                                 ChildId = (int)selectChildId,
                                 DeregistrationDay = date,
                                 Reason = selectChild["reason"],
-                                DateDeregistrationOn = DateTime.Now
+                                DateDeregistrationOn = DateTime.Now,
+                                DeregistrationBy = currentMember.Nickname
                             };
 
                             await Context.ChildDeregistrations.AddAsync(newDeregistration);
@@ -161,6 +171,7 @@ namespace Balu_Ass_2.Handler
 
         public static async Task FastDeregistrateChildToDbHandler(ComponentInteractionCreateEventArgs args)
         {
+            GetCurrentUser(args.Interaction.User);
             int.TryParse(args.Values[0], out int childId);
             var firstName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == childId).FirstName;
             var lastName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == childId).LastName;
@@ -186,7 +197,8 @@ namespace Balu_Ass_2.Handler
                     ChildId = childId,
                     DeregistrationDay = DateTime.Now.Date,
                     Reason = "Schnellabmeldung",
-                    DateDeregistrationOn = DateTime.Now
+                    DateDeregistrationOn = DateTime.Now,
+                    DeregistrationBy = currentMember.Nickname
                 };
 
                 await Context.ChildDeregistrations.AddAsync(newDeregistration);
@@ -213,6 +225,7 @@ namespace Balu_Ass_2.Handler
 
         public static async Task RegistrateChildToDbHandler(ModalSubmitEventArgs args)
         {
+            GetCurrentUser(args.Interaction.User);
             var selectChild = args.Values;
             var selectChildId = _DataStore.ChildId;
             var firstName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == selectChildId).FirstName;
@@ -234,7 +247,8 @@ namespace Balu_Ass_2.Handler
                         DeregistrationDay = existingDeregistration.DeregistrationDay,
                         Reason = existingDeregistration.Reason,
                         DateDeregistrationOn = existingDeregistration.DateDeregistrationOn,
-                        DateWithdrawnDeregistration = DateTime.Now
+                        DateWithdrawnDeregistration = DateTime.Now,
+                        DeregistrationBy = currentMember.Nickname
                     };
 
                     await Context.ChildWithdrawnDeregistrations.AddAsync(newRegistration);
@@ -293,7 +307,8 @@ namespace Balu_Ass_2.Handler
                             DeregistrationDay = date.DeregistrationDay,
                             Reason = date.Reason,
                             DateDeregistrationOn = date.DateDeregistrationOn,
-                            DateWithdrawnDeregistration = DateTime.Now
+                            DateWithdrawnDeregistration = DateTime.Now,
+                            DeregistrationBy = currentMember.Nickname
                         };
 
                         await Context.ChildWithdrawnDeregistrations.AddAsync(newRegistration);
