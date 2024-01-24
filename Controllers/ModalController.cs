@@ -38,6 +38,11 @@ namespace Balu_Ass_2.Controllers
                         await SupportController.DeleteLastMessage(presenceChannelId);
                         break;
                     }
+                case "createVoting":
+                    {
+                        await VotingInformationView.CreateVotingAsync(args);
+                        break;
+                    }
             }
         }
     }

@@ -26,14 +26,17 @@ namespace Balu_Ass_2.Views
 
             DiscordButtonComponent addChildToDb = new(ButtonStyle.Primary, "addChildToDb", "Kind hinzufügen");
             DiscordButtonComponent deleteChildFromDb = new(ButtonStyle.Danger, "deleteChildFromDb", "Kind entfernen");
+            DiscordButtonComponent createVoting = new(ButtonStyle.Primary, "createVoting", "Absitmmung erstellen");
 
             var message = new DiscordMessageBuilder().AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
                 .WithTitle("Hallo und Herzlich Wilkommen")
                 .WithDescription("Hier können verschiedene Befehle ausgeführt werden.")
                 .AddField("Kind hinzufügen", $"`Hier kannst du ein Kind dem Balu hinzufügen`")
-                .AddField("Kind entfernen", $"`Hier kannst du ein Kind aus dem Balu entfernen`"))
+                .AddField("Kind entfernen", $"`Hier kannst du ein Kind aus dem Balu entfernen`")
+                .AddField("Abstimmung erstellen", "`Hier kannst du eine Abstimmung erstellen`"))
                 .AddComponents(addChildToDb)
-                .AddComponents(deleteChildFromDb);
+                .AddComponents(deleteChildFromDb)
+                .AddComponents(createVoting);
 
             await exclusiveChannel.SendMessageAsync(message);
         }

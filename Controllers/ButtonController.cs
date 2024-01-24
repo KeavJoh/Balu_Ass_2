@@ -44,6 +44,11 @@ namespace Balu_Ass_2.Controllers
                         await ChildPresenceCommandMainView.RegistrateChildDropdown(args);
                         break;
                     }
+                case "createVoting":
+                    {
+                        await VotingInformationView.CreateVotingModal(args);
+                        break;
+                    }
             }
         }
     }
