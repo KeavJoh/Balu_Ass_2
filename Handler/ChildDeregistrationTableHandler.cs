@@ -19,16 +19,10 @@ namespace Balu_Ass_2.Handler
         private static readonly int DeleteTimeSpan = ProvidedSetups.BotConfig.GlobalSettings.DeleteTimeSpan;
         private static readonly ApplicationDbContext Context = ProvidedSetups.Context;
         private static readonly DiscordClient Client = ProvidedSetups.Client;
-        private static DiscordMember? currentMember;
-
-        private static void GetCurrentUser(DiscordUser user)
-        {
-            currentMember = (DiscordMember)user;
-        }
 
         public static async Task DeregistrateChildToDbHandler(ModalSubmitEventArgs args)
         {
-            GetCurrentUser(args.Interaction.User);
+            DiscordMember currentMember = SupportController.GetCurrentUser(args.Interaction.User);
             var selectChild = args.Values;
             var selectChildId = _DataStore.ChildId;
             var firstName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == selectChildId).FirstName;
@@ -171,7 +165,7 @@ namespace Balu_Ass_2.Handler
 
         public static async Task FastDeregistrateChildToDbHandler(ComponentInteractionCreateEventArgs args)
         {
-            GetCurrentUser(args.Interaction.User);
+            DiscordMember currentMember = SupportController.GetCurrentUser(args.Interaction.User);
             int.TryParse(args.Values[0], out int childId);
             var firstName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == childId).FirstName;
             var lastName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == childId).LastName;
@@ -225,7 +219,7 @@ namespace Balu_Ass_2.Handler
 
         public static async Task RegistrateChildToDbHandler(ModalSubmitEventArgs args)
         {
-            GetCurrentUser(args.Interaction.User);
+            DiscordMember currentMember = SupportController.GetCurrentUser(args.Interaction.User);
             var selectChild = args.Values;
             var selectChildId = _DataStore.ChildId;
             var firstName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == selectChildId).FirstName;
