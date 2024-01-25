@@ -241,8 +241,9 @@ namespace Balu_Ass_2.Handler
                         DeregistrationDay = existingDeregistration.DeregistrationDay,
                         Reason = existingDeregistration.Reason,
                         DateDeregistrationOn = existingDeregistration.DateDeregistrationOn,
+                        DeregistrationBy = existingDeregistration.DeregistrationBy,
                         DateWithdrawnDeregistration = DateTime.Now,
-                        DeregistrationBy = currentMember.Nickname
+                        WithdrawnBy = currentMember.Nickname
                     };
 
                     await Context.ChildWithdrawnDeregistrations.AddAsync(newRegistration);
