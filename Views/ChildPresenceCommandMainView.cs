@@ -33,8 +33,8 @@ namespace Balu_Ass_2.Views
                 .AddField("Abmelden", $"`Hier kannst du dein Kind für einen oder mehrere Tage abmelden`")
                 .AddField("Schnellabmeldung", $"`Hier kannst du dein Kind für den aktuellen Tag abmelden`")
                 .AddField("Anmelden", $"`Hier kannst du eine Abmeldung für einen oder mehrere Tage rückgängig machen`"))
-                .AddComponents(deregistrateChild)
                 .AddComponents(fastDeregistrateChild)
+                .AddComponents(deregistrateChild)
                 .AddComponents(registrateChild);
 
             await presenceCommandChannel.SendMessageAsync(message);
