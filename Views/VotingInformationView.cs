@@ -42,7 +42,7 @@ namespace Balu_Ass_2.Views
 
         public static async Task CreateVotingAsync(ModalSubmitEventArgs args)
         {
-            DiscordMember currentMember = SupportController.GetCurrentUser(args.Interaction.User);
+            DiscordMember currentMember = await SupportController.GetCurrentUser(args.Interaction.User);
             await CreateVoting(args.Values["description"], args.Values["option1"], args.Values["option2"], args.Values["option3"], args.Values["option4"]);
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,

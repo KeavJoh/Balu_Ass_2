@@ -47,9 +47,9 @@ class Programm
         Client.ModalSubmitted += ModalController.ModalSubmitEvent;
         Client.ComponentInteractionCreated += DropdownController.DropdwonSubmitEvent;
 
-        var slashCommandsConfig = Client.UseSlashCommands();
+        //var slashCommandsConfig = Client.UseSlashCommands();
 
-        slashCommandsConfig.RegisterCommands<ExclusiveCommandMainView>();
+        //slashCommandsConfig.RegisterCommands<ExclusiveCommandMainView>();
 
         Timer = new Timer(StartTimer, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
 
