@@ -48,7 +48,8 @@ namespace Balu_Ass_2.Views
             var message = new DiscordInteractionResponseBuilder()
                 .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
                 .WithTitle("Wähle bitte das Kind welches du Abmelden möchtest:"))
-                .AddComponents(dropdown);
+                .AddComponents(dropdown)
+                .AsEphemeral(false);
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
         }
@@ -76,7 +77,8 @@ namespace Balu_Ass_2.Views
             var message = new DiscordInteractionResponseBuilder()
                 .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
                 .WithTitle("Wähle bitte das Kind welches du Abmelden möchtest:"))
-                .AddComponents(dropdown);
+                .AddComponents(dropdown)
+                .AsEphemeral(false);
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
         }
@@ -89,7 +91,8 @@ namespace Balu_Ass_2.Views
             var message = new DiscordInteractionResponseBuilder()
                 .AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
                 .WithTitle("Wähle bitte das Kind welches du Anmelden möchtest:"))
-                .AddComponents(dropdown);
+                .AddComponents(dropdown)
+                .AsEphemeral(false);
 
             await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, message);
         }
