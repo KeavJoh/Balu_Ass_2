@@ -7,6 +7,7 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using DSharpPlus.SlashCommands;
+using Microsoft.EntityFrameworkCore;
 
 class Programm
 {
@@ -25,6 +26,7 @@ class Programm
 
         //database configuration
         using var context = new ApplicationDbContext(botConfig);
+        context.Database.Migrate();
         context.Database.EnsureCreated();
 
         //registrate bot
@@ -46,10 +48,6 @@ class Programm
         Client.ComponentInteractionCreated += ButtonController.ButtonClickEvent;
         Client.ModalSubmitted += ModalController.ModalSubmitEvent;
         Client.ComponentInteractionCreated += DropdownController.DropdwonSubmitEvent;
-
-        var slashCommandsConfig = Client.UseSlashCommands();
-
-        slashCommandsConfig.RegisterCommands<ExclusiveCommandMainView>();
 
         Timer = new Timer(StartTimer, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
 

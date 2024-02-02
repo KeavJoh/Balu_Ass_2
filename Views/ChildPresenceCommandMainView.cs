@@ -30,11 +30,11 @@ namespace Balu_Ass_2.Views
             var message = new DiscordMessageBuilder().AddEmbed(new DiscordEmbedBuilder().WithColor(DiscordColor.DarkBlue)
                 .WithTitle("Hallo und Herzlich Wilkommen")
                 .WithDescription("Hier kannst du dein Kind Abmelden oder auch wieder Anmelden. Klicke dazu einfach auf einen der unten stehenden Befehle.")
-                .AddField("Abmelden", $"`Hier kannst du dein Kind für einen oder mehrere Tage abmelden`")
                 .AddField("Schnellabmeldung", $"`Hier kannst du dein Kind für den aktuellen Tag abmelden`")
+                .AddField("Abmelden", $"`Hier kannst du dein Kind für einen oder mehrere Tage abmelden`")
                 .AddField("Anmelden", $"`Hier kannst du eine Abmeldung für einen oder mehrere Tage rückgängig machen`"))
-                .AddComponents(deregistrateChild)
                 .AddComponents(fastDeregistrateChild)
+                .AddComponents(deregistrateChild)
                 .AddComponents(registrateChild);
 
             await presenceCommandChannel.SendMessageAsync(message);

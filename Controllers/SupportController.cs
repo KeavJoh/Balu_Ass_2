@@ -51,5 +51,10 @@ namespace Balu_Ass_2.Controllers
 
             return finalDateTime.Date;
         }
+
+        public static async Task<DiscordMember> GetCurrentUser(DiscordUser user)
+        {
+            return (DiscordMember)user;
+        }
     }
 }

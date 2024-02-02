@@ -15,8 +15,8 @@ namespace Balu_Ass_2.Modals
         public DateTime DeregistrationDay { get; set; }
         public string Reason { get; set; }
         public DateTime DateDeregistrationOn { get; set; }
-        public string DeregistrationBy { get; set; }
+        public string? DeregistrationBy { get; set; }
         public DateTime DateWithdrawnDeregistration { get; set; }
-        public string WithdrawnBy { get; set; }
+        public string? WithdrawnBy { get; set; }
     }
 }
