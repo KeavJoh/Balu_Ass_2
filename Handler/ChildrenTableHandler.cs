@@ -17,17 +17,29 @@ namespace Balu_Ass_2.Handler
         private static readonly int DeleteTimeSpan = ProvidedSetups.BotConfig.GlobalSettings.DeleteTimeSpan;
         private static readonly ApplicationDbContext Context = ProvidedSetups.Context;
         private static readonly DiscordClient Client = ProvidedSetups.Client;
+        private static int groupId;
 
         public static async Task AddChildToDbHandler(ModalSubmitEventArgs args)
         {
             try
             {
+                if(args.Values["group"] == "1" || args.Values["group"] == "2")
+                {
+                    int.TryParse(args.Values["group"], out groupId);
+                }
+                else
+                {
+                    await LogController.SaveLogMessage(1, 3, $"Ungültige GroupId: {args.Values["group"]}");
+                    throw new Exception();
+                }
+
                 var newChild = new Children
                 {
                     FirstName = args.Values["firstName"],
                     LastName = args.Values["lastName"],
                     Mother = args.Values["nameOfMother"],
                     Father = args.Values["nameOfFather"],
+                    Group = groupId,
                     DateOfLogged = DateTime.Now
                 };
 
