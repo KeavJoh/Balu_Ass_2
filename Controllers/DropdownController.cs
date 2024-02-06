@@ -42,6 +42,11 @@ namespace Balu_Ass_2.Controllers
                         await ChildPresenceCommandMainView.RegistrateChildModal(args);
                         break;
                     }
+                case "editChildDropdown":
+                    {
+                        await ExclusiveCommandMainView.EditChildModal(args);
+                        break;
+                    }
             }
         }
     }

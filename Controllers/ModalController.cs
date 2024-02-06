@@ -17,6 +17,7 @@ namespace Balu_Ass_2.Controllers
         public static async Task ModalSubmitEvent(DiscordClient client, ModalSubmitEventArgs args)
         {
             var modalId = args.Interaction.Data.CustomId;
+            var exclusiveChannelId = await client.GetChannelAsync(ProvidedSetups.BotConfig.ChannelIds.ExclusiveViewChannel);
             var presenceChannelId = await client.GetChannelAsync(ProvidedSetups.BotConfig.ChannelIds.ChildPresenceViewChannel);
 
             switch (modalId)
@@ -41,6 +42,12 @@ namespace Balu_Ass_2.Controllers
                 case "createVoting":
                     {
                         await VotingInformationView.CreateVotingAsync(args);
+                        break;
+                    }
+                case "editChildToDb":
+                    {
+                        await DatabaseAccessController.EditChild(args);
+                        await SupportController.DeleteLastMessage(exclusiveChannelId);
                         break;
                     }
             }

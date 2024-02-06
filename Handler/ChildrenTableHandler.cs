@@ -23,7 +23,7 @@ namespace Balu_Ass_2.Handler
         {
             try
             {
-                if(args.Values["group"] == "1" || args.Values["group"] == "2")
+                if (args.Values["group"] == "1" || args.Values["group"] == "2")
                 {
                     int.TryParse(args.Values["group"], out groupId);
                 }
@@ -116,6 +116,52 @@ namespace Balu_Ass_2.Handler
                 await LogController.SaveLogMessage(1, 3, $"Bei dem Versuch ein Kind zu entfernen, ist ein Fehler aufgetreten. DatabaseAccessController.DeleteChildFromDb");
                 await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
                     MessageController.CreateInteractionResponseMessage($"Leider trat ein Fehler bei dem entfernen des Kindes aus der Datenbank auf. Bitte versuche es erneut!", 3));
+
+                await Task.Delay(DeleteTimeSpan);
+                await args.Interaction.DeleteOriginalResponseAsync();
+            }
+        }
+
+        public static async Task EditChildFromDb(ModalSubmitEventArgs args)
+        {
+            try
+            {
+                if (args.Values["group"] == "1" || args.Values["group"] == "2")
+                {
+                    int.TryParse(args.Values["group"], out groupId);
+                }
+                else
+                {
+                    await LogController.SaveLogMessage(1, 3, $"Ungültige GroupId: {args.Values["group"]}");
+                    throw new Exception();
+                }
+
+                var selectChildId = _DataStore.EditChildId;
+                _DataStore.EditChildId = 0;
+                var childInDb = Context.Childrens.SingleOrDefault(x => x.Id == selectChildId);
+
+                childInDb.FirstName = args.Values["firstName"];
+                childInDb.LastName = args.Values["lastName"];
+                childInDb.Mother = args.Values["nameOfMother"];
+                childInDb.Father = args.Values["nameOfFather"];
+                childInDb.Group = groupId;
+
+                Context.SaveChanges();
+
+                await _DataStore.ReloadListOfChildren();
+
+                await LogController.SaveLogMessage(2, 1, $"{childInDb.FirstName} {childInDb.LastName} wurde durch den Nutzer {args.Interaction.User.Username} angepasst!");
+                await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
+                    MessageController.CreateInteractionResponseMessage($"{childInDb.FirstName} {childInDb.LastName} wurde erfolgreich angepasst", 1));
+
+                await Task.Delay(DeleteTimeSpan);
+                await args.Interaction.DeleteOriginalResponseAsync();
+            }
+            catch (Exception)
+            {
+                await LogController.SaveLogMessage(1, 3, $"Bei dem Versuch ein Kind anzupassen, ist ein Fehler aufgetreten. DatabaseAccessController.EditChildFromDb");
+                await args.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
+                    MessageController.CreateInteractionResponseMessage($"Leider trat ein Fehler bei dem anpassen des Kindes auf der Datenbank auf. Bitte versuche es erneut!", 3));
 
                 await Task.Delay(DeleteTimeSpan);
                 await args.Interaction.DeleteOriginalResponseAsync();

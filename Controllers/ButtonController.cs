@@ -49,6 +49,11 @@ namespace Balu_Ass_2.Controllers
                         await VotingInformationView.CreateVotingModal(args);
                         break;
                     }
+                case "editChild":
+                    {
+                        await ExclusiveCommandMainView.EditChildDropdown(args);
+                        break;
+                    }
             }
         }
     }

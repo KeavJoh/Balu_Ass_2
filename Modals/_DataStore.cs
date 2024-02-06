@@ -19,12 +19,14 @@ namespace Balu_Ass_2.Modals
         public static List<Children> ListOfChildren { get; set; }
         public static List<ChildDeregistration> DeregistrationList { get; set; }
         public static int? ChildId { get; set; }
+        public static int? EditChildId { get; set; }
 
         public static async Task InitDataStore()
         {
             await ReloadListOfChildren();
             await ReloadListOfDeregistrations();
-            ChildId = null;
+            ChildId = 0;
+            EditChildId = 0;
         }
 
         public static async Task ReloadListOfChildren()

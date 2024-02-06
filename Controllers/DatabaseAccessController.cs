@@ -42,5 +42,10 @@ namespace Balu_Ass_2.Controllers
         {
             await ChildDeregistrationTableHandler.RegistrateChildToDbHandler(args);
         }
+
+        public static async Task EditChild(ModalSubmitEventArgs args)
+        {
+            await ChildrenTableHandler.EditChildFromDb(args);
+        }
     }
 }
