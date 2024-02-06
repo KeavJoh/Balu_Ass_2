@@ -26,8 +26,8 @@ class Programm
 
         //database configuration
         using var context = new ApplicationDbContext(botConfig);
-        context.Database.Migrate();
         context.Database.EnsureCreated();
+        context.Database.Migrate();
 
         //registrate bot
         Client = new DiscordClient(registrateBotController.InitClient(botConfig));
