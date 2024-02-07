@@ -20,11 +20,15 @@ namespace Balu_Ass_2.Modals
         public static List<ChildDeregistration> DeregistrationList { get; set; }
         public static int? ChildId { get; set; }
         public static int? EditChildId { get; set; }
+        public static int ChildrenTotalCount { get; set; }
+        public static int GroupOneCount { get; set; }
+        public static int GroupTwoCount { get; set; }
 
         public static async Task InitDataStore()
         {
             await ReloadListOfChildren();
             await ReloadListOfDeregistrations();
+            await CountingChildren();
             ChildId = 0;
             EditChildId = 0;
         }
@@ -34,6 +38,7 @@ namespace Balu_Ass_2.Modals
             try
             {
                 ListOfChildren = await context.Childrens.OrderBy(x => x.FirstName).ToListAsync();
+                await CountingChildren();
             }
             catch (Exception)
             {
@@ -57,6 +62,13 @@ namespace Balu_Ass_2.Modals
             }
 
             return options;
+        }
+
+        private static async Task CountingChildren()
+        {
+            ChildrenTotalCount = context.Childrens.Count();
+            GroupOneCount = context.Childrens.Count(x => x.ChildrenGroup == 1);
+            GroupTwoCount = context.Childrens.Count(y => y.ChildrenGroup == 2);
         }
     }
 }
