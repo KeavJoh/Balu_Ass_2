@@ -16,7 +16,10 @@ namespace Balu_Ass_2.Controllers
             var allMessages = await channel.GetMessagesAsync();
             if (allMessages.Count > 0)
             {
-                await channel.DeleteMessagesAsync(allMessages);
+                foreach (var message in allMessages)
+                {
+                    await message.DeleteAsync();
+                }
             }
         }
 
