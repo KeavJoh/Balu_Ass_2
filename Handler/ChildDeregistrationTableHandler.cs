@@ -26,6 +26,7 @@ namespace Balu_Ass_2.Handler
             var selectChildId = _DataStore.ChildId;
             var firstName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == selectChildId).FirstName;
             var lastName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == selectChildId).LastName;
+            var childGroup = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == selectChildId).ChildrenGroup;
             DateTime dateFrom = SupportController.ParseStringToDateTime(selectChild["dateFrom"]);
             DateTime dateTo = SupportController.ParseStringToDateTime(selectChild["dateTo"]);
 
@@ -66,7 +67,8 @@ namespace Balu_Ass_2.Handler
                             DeregistrationDay = dateFrom,
                             Reason = selectChild["reason"],
                             DateDeregistrationOn = DateTime.Now,
-                            DeregistrationBy = args.Interaction.User.Username
+                            DeregistrationBy = args.Interaction.User.Username,
+                            ChildrenGroup = childGroup
                         };
 
                         await Context.ChildDeregistrations.AddAsync(newDeregistration);
@@ -130,7 +132,8 @@ namespace Balu_Ass_2.Handler
                                 DeregistrationDay = date,
                                 Reason = selectChild["reason"],
                                 DateDeregistrationOn = DateTime.Now,
-                                DeregistrationBy = args.Interaction.User.Username
+                                DeregistrationBy = args.Interaction.User.Username,
+                                ChildrenGroup = childGroup
                             };
 
                             await Context.ChildDeregistrations.AddAsync(newDeregistration);
@@ -174,6 +177,7 @@ namespace Balu_Ass_2.Handler
             int.TryParse(args.Values[0], out int childId);
             var firstName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == childId).FirstName;
             var lastName = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == childId).LastName;
+            var childGroup = _DataStore.ListOfChildren.FirstOrDefault(x => x.Id == childId).ChildrenGroup;
 
             var existingDeregistration = _DataStore.DeregistrationList.FirstOrDefault(x => x.ChildId == childId && x.DeregistrationDay == DateTime.Now.Date);
 
@@ -197,7 +201,8 @@ namespace Balu_Ass_2.Handler
                     DeregistrationDay = DateTime.Now.Date,
                     Reason = "Schnellabmeldung",
                     DateDeregistrationOn = DateTime.Now,
-                    DeregistrationBy = args.Interaction.User.Username
+                    DeregistrationBy = args.Interaction.User.Username,
+                    ChildrenGroup = childGroup
                 };
 
                 await Context.ChildDeregistrations.AddAsync(newDeregistration);
