@@ -26,7 +26,7 @@ class Programm
 
         //database configuration
         using var context = new ApplicationDbContext(botConfig);
-        context.Database.EnsureCreated();
+        //context.Database.EnsureCreated();
         context.Database.Migrate();
 
         //registrate bot

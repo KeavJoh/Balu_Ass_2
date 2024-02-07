@@ -13,7 +13,7 @@ namespace Balu_Ass_2.Modals
         public string LastName { get; set; }
         public string? Mother { get; set; }
         public string? Father { get; set; }
-        public int Group {  get; set; }
+        public int ChildrenGroup {  get; set; }
         public DateTime DateOfLogged { get; set; }
     }
 }

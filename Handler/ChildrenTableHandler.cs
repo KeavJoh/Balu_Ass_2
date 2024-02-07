@@ -39,7 +39,7 @@ namespace Balu_Ass_2.Handler
                     LastName = args.Values["lastName"],
                     Mother = args.Values["nameOfMother"],
                     Father = args.Values["nameOfFather"],
-                    Group = groupId,
+                    ChildrenGroup = groupId,
                     DateOfLogged = DateTime.Now
                 };
 
@@ -144,7 +144,7 @@ namespace Balu_Ass_2.Handler
                 childInDb.LastName = args.Values["lastName"];
                 childInDb.Mother = args.Values["nameOfMother"];
                 childInDb.Father = args.Values["nameOfFather"];
-                childInDb.Group = groupId;
+                childInDb.ChildrenGroup = groupId;
 
                 Context.SaveChanges();
 

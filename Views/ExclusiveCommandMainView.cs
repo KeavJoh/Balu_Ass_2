@@ -72,7 +72,7 @@ namespace Balu_Ass_2.Views
                 .AddComponents(new TextInputComponent(label: "Nachname", "lastName", value: selectChild.LastName))
                 .AddComponents(new TextInputComponent(label: "Mutter", "nameOfMother", value: selectChild.Mother, required: false))
                 .AddComponents(new TextInputComponent(label: "Vater", "nameOfFather", value: selectChild.Father, required: false))
-                .AddComponents(new TextInputComponent(label: "Gruppe", "group", value: selectChild.Group.ToString(), required: true, max_length: 1));
+                .AddComponents(new TextInputComponent(label: "Gruppe (1 = Bären / 2 = Elefanten)", "group", value: selectChild.ChildrenGroup.ToString(), required: true, max_length: 1));
             await args.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
         }
 
